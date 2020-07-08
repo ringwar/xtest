@@ -1,0 +1,6 @@
+/env
+__pycache__
+/test
+.DS_Store
+.vscode/
+battongx/config.py
