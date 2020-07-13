@@ -10,13 +10,13 @@ manager = Manager(app)
 
 @manager.command
 def runserver():
-    app.run(host='0.0.0.0', port=5500)
+    app.run(host='0.0.0.0', port=5000)
 
 
 @manager.command
 def debug():
     app.config.from_object('battongx.config.DevelopmentConfig')
-    app.run(host='0.0.0.0', port=5500, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
 
 @manager.command
