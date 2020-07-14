@@ -11,18 +11,18 @@ jobs:
     container: circleci/python:3.7.5
 
     steps:
-    - name: Cache dependency
-      uses: actions/cache@v2
-      with:
-        path: ./env
-        key: deps-${{ .Branch }}-${{ hashFiles('**/requirements.txt') }}
+      - name: Cache dependency
+        uses: actions/cache@v2
+        with:
+          path: ./env
+          key: deps-${{ .Branch }}-${{ hashFiles('**/requirements.txt') }}
 
-    - name: install dependencies
+      - name: install dependencies
         run: |
-            python3 -m venv env
-            . env/bin/activate
-            pip install -r requirements.txt
-    - name: run tests
+          python3 -m venv env
+          . env/bin/activate
+          pip install -r requirements.txt
+      - name: run tests
         run: |
-            . env/bin/activate
-            python manage.py test
+          . env/bin/activate
+          python manage.py test
