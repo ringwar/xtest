@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/python:3.7.5
 
-    working_directory: ~/x_server
+    working_directory: ~/xserver
 
     steps:
       - checkout
@@ -33,7 +33,7 @@ jobs:
     docker:
       - image: circleci/python:3.7.5
 
-    working_directory: ~/x_server
+    working_directory: ~/xserver
 
     steps:
       - checkout
@@ -58,6 +58,7 @@ jobs:
 
               docker build -t x-server-gunicorn .
               docker build -t x-server-nginx ./nginx
+              
               docker tag x-server-gunicorn:latest 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-gunicorn-latest
               docker tag x-server-nginx:latest 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-nginx-latest
 
