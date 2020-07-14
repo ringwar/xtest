@@ -1,0 +1,27 @@
+on:
+  push:
+    brnaches:
+      - xdev-release
+
+name: Deploy to Amazon ECS
+
+jobs:
+  tests:
+    build:
+      runs-on: linux-latest
+      container: circleci/python:3.7.5
+
+      steps:
+        - name: Cache dependency
+          uses: actions/cache@v2
+          with:
+            path: ./env
+            key: deps-${{ .Branch }}-${{ hashFiles('**/requirements.txt') }}
+
+        - name: install dependencies
+          run: python3 -m venv env
+          run: . env/bin/activate
+          run: pip install -r requirements.txt
+        - name: run tests
+          run: . env/bin/activate
+          run: python manage.py test
