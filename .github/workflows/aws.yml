@@ -15,7 +15,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./env
-          key: deps-${{ .Branch }}-${{ hashFiles('**/requirements.txt') }}
+          key: deps-${{ hashFiles('**/requirements.txt') }}
 
       - name: install dependencies
         run: |
