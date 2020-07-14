@@ -1,6 +1,6 @@
 {
   "cluster": "x-server-dev",
-  "service": "service-dev",
+  "service": "service-xdev",
   "taskDefinition": "x-server-dev",
   "healthCheckGracePeriodSeconds": 30,
   "forceNewDeployment": true
