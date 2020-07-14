@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - name: Cache dependency
-        uses: actions/cache@v2
+      uses: actions/cache@v2
         with:
         path: ./env
         key: deps-${{ .Branch }}-${{ hashFiles('**/requirements.txt') }}
