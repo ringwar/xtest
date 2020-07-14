@@ -7,6 +7,7 @@ name: Deploy to Amazon ECS
 
 jobs:
   tests:
+    runs-on: linux
     container: circleci/python:3.7.5
 
     steps:
