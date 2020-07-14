@@ -11,6 +11,7 @@ jobs:
     container: circleci/python:3.7.5
 
     steps:
+      - uses: actions/checkout@v2
       - name: Cache dependency
         uses: actions/cache@v2
         with:
