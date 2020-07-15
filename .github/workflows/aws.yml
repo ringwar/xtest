@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
       - name: say hello
         run: echo "hello world"
       - name: Cache dependency
