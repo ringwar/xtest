@@ -61,25 +61,23 @@ jobs:
       - name: AWS Deployment
         id: build-image
         run: |
-          pwd
-          ls -al
-      #     . env/bin/activate
-      #     `aws ecr get-login --no-include-email --region ap-northeast-2`
-      #     aws configure set default.region ap-northeast-2
-      #     docker build -t x-server-gunicorn .
-      #     docker build -t x-server-nginx ./nginx
-      #     docker tag x-server-gunicorn:latest 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-gunicorn-latest
-      #     docker tag x-server-nginx:latest 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-nginx-latest
-      #     docker push 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-gunicorn-latest
-      #     docker push 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-nginx-latest
-      #     aws ecs register-task-definition --cli-input-json file://`pwd`/deployments/ecs-dev.json
-      #     aws ecs update-service --cli-input-json file://`pwd`/deployments/service-dev.json
-      #     # TASKARN=`aws ecs list-tasks --cluster x-server-dev --output json | grep arn: | cut -d "\"" -f2 | tr -d "\n \t"`
-      #     echo "::set-output name=TASKARN::`aws ecs list-tasks --cluster x-server-dev --output json | grep arn: | cut -d "\"" -f2 | tr -d "\n \t"`"
-      # - name: ECS stop
-      #   # uses: aws-actions/amazon-ecs-render-task-definition@v1
-      #   run: |
-      #     aws ecs stop-task --cluster x-server-dev --task ${{ steps.build-imageoutputs.TASKARN }}
+          . env/bin/activate
+          `aws ecr get-login --no-include-email --region ap-northeast-2`
+          aws configure set default.region ap-northeast-2
+          docker build -t x-server-gunicorn .
+          docker build -t x-server-nginx ./nginx
+          docker tag x-server-gunicorn:latest 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-gunicorn-latest
+          docker tag x-server-nginx:latest 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-nginx-latest
+          docker push 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-gunicorn-latest
+          docker push 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-nginx-latest
+          aws ecs register-task-definition --cli-input-json file://`pwd`/deployments/ecs-dev.json
+          aws ecs update-service --cli-input-json file://`pwd`/deployments/service-dev.json
+          # TASKARN=`aws ecs list-tasks --cluster x-server-dev --output json | grep arn: | cut -d "\"" -f2 | tr -d "\n \t"`
+          echo "::set-output name=TASKARN::`aws ecs list-tasks --cluster x-server-dev --output json | grep arn: | cut -d "\"" -f2 | tr -d "\n \t"`"
+      - name: ECS stop
+        # uses: aws-actions/amazon-ecs-render-task-definition@v1
+        run: |
+          aws ecs stop-task --cluster x-server-dev --task ${{ steps.build-imageoutputs.TASKARN }}
       # - name: ECS task definition
       #   uses: aws-actions/amazon-ecs-render-task-definition@v1
       #     INSTANCEARN=`aws ecs list-container-instances --cluster x-server-dev --output json| grep arn: | cut -d "\"" -f2 | tr -d "\n \t"`
