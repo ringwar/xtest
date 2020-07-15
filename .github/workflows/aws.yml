@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@xdev-release
+        uses: actions/checkout@master
       - name: say hello
         run: echo "hello world"
       - name: Cache dependency
