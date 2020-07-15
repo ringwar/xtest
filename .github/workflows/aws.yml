@@ -12,12 +12,14 @@ jobs:
     #   run:
     #     shell: bash
     #     working-directory: ~/xserver
-    # container: circleci/python:3.7.5
+    container: circleci/python:3.7.5
 
     steps:
       - name: checkout
         # uses: actions/checkout@v2
-        run: ls -al
+        run: |
+          pwd
+          ls -al
       - name: say hello
         run: echo "hello world"
       - name: Cache dependency
