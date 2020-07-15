@@ -39,18 +39,25 @@ jobs:
   deploy:
     needs: tests
     runs-on: ubuntu-latest
-    # container: circleci/python:3.7.5
+    container: circleci/python:3.7.5
 
     steps:
-      # - name: Setup file system permissions
-      #   run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/xtest/
-      # - name: checkout
-      #   uses: actions/checkout@v2
-      # - name: Cache dependency
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: ./env
-      #     key: deps-${{ hashFiles('**/requirements.txt') }}
+      - name: Setup file system permissions
+        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/xtest/
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Cache dependency
+        uses: actions/cache@v2
+        with:
+          path: ./env
+          key: deps-${{ hashFiles('**/requirements.txt') }}
+
+      - name: install dependencies
+        run: |
+          python3 -m venv env
+          . env/bin/activate
+          pip install -r requirements.txt
       - name: AWS Deployment
         id: build-image
         run: |
