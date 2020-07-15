@@ -14,4 +14,5 @@ RUN chmod +x ./gunicorn.sh
 RUN pip install -r requirements.txt
 
 # now run gunicorn using configuration
-CMD ["/bin/sh", "-c", "./gunicorn.sh"]
+# CMD ["/bin/sh", "-c", "./gunicorn.sh"]
+ENTRYPOINT ["/bin/sh", "-c", "./gunicorn.sh"]
