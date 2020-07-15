@@ -45,18 +45,19 @@ jobs:
     container: circleci/python:3.7.5
 
     steps:
-      - name: Setup file system permissions
-        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/xtest/
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: Cache dependency
-        uses: actions/cache@v2
-        with:
-          path: ./env
-          key: deps-${{ hashFiles('**/requirements.txt') }}
+      # - name: Setup file system permissions
+      #   run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/xtest/
+      # - name: checkout
+      #   uses: actions/checkout@v2
+      # - name: Cache dependency
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ./env
+      #     key: deps-${{ hashFiles('**/requirements.txt') }}
       - name: AWS Deployment
         id: build-image
         run: |
+          pwd
           ls -al
       #     . env/bin/activate
       #     `aws ecr get-login --no-include-email --region ap-northeast-2`
