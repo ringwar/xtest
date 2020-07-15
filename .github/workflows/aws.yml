@@ -16,7 +16,8 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        # uses: actions/checkout@v2
+        run: ls -al
       - name: say hello
         run: echo "hello world"
       - name: Cache dependency
