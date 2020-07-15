@@ -16,10 +16,9 @@ jobs:
 
     steps:
       - name: checkout
-        # uses: actions/checkout@v2
-        run: |
-          pwd
-          ls -l
+        uses: actions/checkout@xdev-release
+      - name: say hello
+        run: echo "hello world"
       - name: Cache dependency
         uses: actions/cache@v2
         with:
