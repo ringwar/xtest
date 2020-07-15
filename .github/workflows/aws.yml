@@ -35,3 +35,42 @@ jobs:
         run: |
           . env/bin/activate
           python manage.py test
+
+  deploy:
+    runs-on: ubuntu-latest
+    container: circleci/python:3.7.5
+
+    steps:
+      - name: Setup file system permissions
+        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/xtest/
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Cache dependency
+        uses: actions/cache@v2
+        with:
+          path: ./env
+          key: deps-${{ hashFiles('**/requirements.txt') }}
+      - name: AWS Deployment
+        run: |
+          . env/bin/activate
+
+          `aws ecr get-login --no-include-email --region ap-northeast-2`
+          aws configure set default.region ap-northeast-2
+
+          docker build -t x-server-gunicorn .
+          docker build -t x-server-nginx ./nginx
+          docker tag x-server-gunicorn:latest 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-gunicorn-latest
+          docker tag x-server-nginx:latest 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-nginx-latest
+
+          docker push 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-gunicorn-latest
+          docker push 986937772248.dkr.ecr.ap-northeast-2.amazonaws.com/x-server:dev-nginx-latest
+
+          aws ecs register-task-definition --cli-input-json file://`pwd`/deployments/ecs-dev.json
+          aws ecs update-service --cli-input-json file://`pwd`/deployments/service-dev.json
+
+          TASKARN=`aws ecs list-tasks --cluster x-server-dev --output json | grep arn: | cut -d "\"" -f2 | tr -d "\n \t"`
+
+          aws ecs stop-task --cluster x-server-dev --task ${{TASKARN}}
+          INSTANCEARN=`aws ecs list-container-instances --cluster x-server-dev --output json| grep arn: | cut -d "\"" -f2 | tr -d "\n \t"`
+
+          aws ecs start-task --cluster x-server-dev --task-definition x-server-dev --container-instances ${{INSTANCEARN}}
