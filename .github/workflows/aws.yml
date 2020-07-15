@@ -51,6 +51,7 @@ jobs:
           path: ./env
           key: deps-${{ hashFiles('**/requirements.txt') }}
       - name: AWS Deployment
+        id: build-image
         run: |
           . env/bin/activate
 
@@ -68,9 +69,13 @@ jobs:
           aws ecs register-task-definition --cli-input-json file://`pwd`/deployments/ecs-dev.json
           aws ecs update-service --cli-input-json file://`pwd`/deployments/service-dev.json
 
-          TASKARN=`aws ecs list-tasks --cluster x-server-dev --output json | grep arn: | cut -d "\"" -f2 | tr -d "\n \t"`
-
-          aws ecs stop-task --cluster x-server-dev --task ${{TASKARN}}
-          INSTANCEARN=`aws ecs list-container-instances --cluster x-server-dev --output json| grep arn: | cut -d "\"" -f2 | tr -d "\n \t"`
-
-          aws ecs start-task --cluster x-server-dev --task-definition x-server-dev --container-instances ${{INSTANCEARN}}
+          # TASKARN=`aws ecs list-tasks --cluster x-server-dev --output json | grep arn: | cut -d "\"" -f2 | tr -d "\n \t"`
+          echo "::set-output name=TASKARN::`aws ecs list-tasks --cluster x-server-dev --output json | grep arn: | cut -d "\"" -f2 | tr -d "\n \t"`"
+      - name: ECS stop
+        # uses: aws-actions/amazon-ecs-render-task-definition@v1
+        run: |
+          aws ecs stop-task --cluster x-server-dev --task ${{ steps.build-imageoutputs.TASKARN }}
+      # - name: ECS task definition
+      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+      #     INSTANCEARN=`aws ecs list-container-instances --cluster x-server-dev --output json| grep arn: | cut -d "\"" -f2 | tr -d "\n \t"`
+      #     aws ecs start-task --cluster x-server-dev --task-definition x-server-dev --container-instances ${{INSTANCEARN}}
