@@ -10,11 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        #     shell: bash
+        shell: bash
         working-directory: ~/xserver
     container: circleci/python:3.7.5
 
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
       - name: Cache dependency
         uses: actions/cache@v2
         with:
